@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% load staticfiles %}
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="{% static 'friends_app/home_style.css' %}">
+        <title>Home Page</title>
+    </head>
+    <body>
+        <div id = "wrapper">
+            <a href="/logout">Logout</a>
+            <h1>Hello, {{user.alias}}!</h1>
+            <h3>Here is the list of your friends:</h3>
+            <table>
+                {% if not myFriends and not imFriends %}
+                    <h4>No Friends Currently - Add Some Below!!</h4>
+                {% else %}
+                    <tr>
+                        <th>Alias</th>
+                        <th>Action</th>
+                    </tr>
+                    {% for friend in myFriends %}
+                        <tr>
+                            <td>{{friend.friend_id.alias}}</td>
+                            <td><a href="/profile/{{friend.friend_id.id}}">View Profile</a><a href="/remove/{{friend.id}}">Remove as Friend</a></td>
+                        </tr>
+                    {% endfor %}
+                    {% for friend in imFriends %}
+                        <tr>
+                            <td>{{friend.user_id.alias}}</td>
+                            <td><a href="/profile/{{friend.user_id.id}}">View Profile</a><a href="/remove/{{friend.id}}">Remove as Friend</a></td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </table>
+            <h3>Other Users not on your friends list</h3>
+            <table>
+                <tr>
+                    <th>Alias</th>
+                    <th>Action</th>
+                </tr>
+                {% for user in notFriends %}
+                    <tr>
+                        <td><a href="/profile/{{user.id}}">{{user.alias}}</a></td>
+                        <td><a href="/add/{{user.id}}"><button class = 'addBtn'>Add as Friend</button></a></td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </body>
+</html>
